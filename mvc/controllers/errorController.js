@@ -9,7 +9,6 @@ const handleDuplicateErrDb = err => {
     // const value = err.keyValue.name;
     const value = err.message.match(/(["'])(\\?.)*?\1/)[0];
     // err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
-    console.log(value);
     const message = `Duplicate field value: ${value}. Please use another value`;
     return new AppError(message, 400);
 }
@@ -51,12 +50,8 @@ const proErr = (err, req, res) => {
         }
         // programming error that is unknown
         return res.status(500).json({
-            // status: 'error',
-            // message: 'Something went wrong'
-            status: err.status,
-            error: err,
-            message: err.message,
-            stack: err.stack
+            status: 'error',
+            message: 'Something went wrong'
         })
     }
     if(err.isOperational) {
@@ -67,7 +62,6 @@ const proErr = (err, req, res) => {
     }
         // programming error that is unknown
         console.error('Error', err);
-
         return res.status(err.statusCode).render('error', {
             title: 'Something went wrong!',
             msg: err.message
